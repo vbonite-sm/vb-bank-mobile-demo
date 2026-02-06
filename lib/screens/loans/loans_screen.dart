@@ -6,6 +6,7 @@ import '../../models/loan.dart';
 import '../../theme/colors.dart';
 import '../../utils/constants.dart';
 import '../../utils/formatters.dart';
+import '../../widgets/custom_button.dart';
 
 class LoansScreen extends StatefulWidget {
   const LoansScreen({super.key});
@@ -420,7 +421,8 @@ class _LoanApplicationSheetState extends State<_LoanApplicationSheet> {
                   }),
                   child: Container(
                     margin: const EdgeInsets.symmetric(horizontal: 4),
-                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 4),
+                    height: 72,
                     decoration: BoxDecoration(
                       color: isSelected
                           ? AppColors.primary.withOpacity(0.15)
@@ -433,6 +435,7 @@ class _LoanApplicationSheetState extends State<_LoanApplicationSheet> {
                       ),
                     ),
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(
                           _loanTypeIcon(key),
@@ -451,6 +454,9 @@ class _LoanApplicationSheetState extends State<_LoanApplicationSheet> {
                                 : AppColors.textMuted,
                             fontWeight: FontWeight.w500,
                           ),
+                          textAlign: TextAlign.center,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ],
                     ),
@@ -556,25 +562,10 @@ class _LoanApplicationSheetState extends State<_LoanApplicationSheet> {
           const SizedBox(height: 24),
 
           // Apply Button
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton(
-              onPressed: _isLoading ? null : _apply,
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 16),
-              ),
-              child: _isLoading
-                  ? const SizedBox(
-                      height: 20,
-                      width: 20,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2,
-                        color: Colors.white,
-                      ),
-                    )
-                  : const Text('Apply for Loan',
-                      style: TextStyle(fontSize: 16)),
-            ),
+          CustomButton(
+            text: 'Apply for Loan',
+            onPressed: _apply,
+            isLoading: _isLoading,
           ),
           const SizedBox(height: 16),
         ],

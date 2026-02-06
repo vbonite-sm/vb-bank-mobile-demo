@@ -100,7 +100,7 @@ class TransactionItem extends StatelessWidget {
   }
 
   bool _isCredit() {
-    if (transaction.type == 'deposit' || transaction.type == 'topup') {
+    if (transaction.type == 'deposit' || transaction.type == 'topup' || transaction.type == 'loan') {
       return true;
     }
     if (transaction.type == 'transfer') {

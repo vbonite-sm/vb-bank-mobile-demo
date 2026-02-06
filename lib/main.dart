@@ -77,11 +77,40 @@ class VBBankApp extends StatelessWidget {
                         systemNavigationBarColor: Colors.white,
                       ),
               );
-              return GestureDetector(
-                // Dismiss keyboard/focus when tapping outside input fields
+
+              Widget app = GestureDetector(
                 onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
                 child: child ?? const SizedBox.shrink(),
               );
+
+              // On web, constrain to phone resolution
+              if (kIsWeb) {
+                return Container(
+                  color: const Color(0xFF050816),
+                  child: Center(
+                    child: Container(
+                      constraints: const BoxConstraints(
+                        maxWidth: 430,
+                        maxHeight: 932,
+                      ),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(24),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.5),
+                            blurRadius: 40,
+                            spreadRadius: 4,
+                          ),
+                        ],
+                      ),
+                      clipBehavior: Clip.antiAlias,
+                      child: app,
+                    ),
+                  ),
+                );
+              }
+
+              return app;
             },
           );
         },

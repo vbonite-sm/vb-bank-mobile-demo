@@ -30,40 +30,31 @@ class CustomButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bgColor = backgroundColor ?? AppColors.primary;
-    final fgColor = textColor ?? Colors.white;
-
-    if (isOutlined) {
-      return SizedBox(
-        width: width ?? double.infinity,
-        height: height,
-        child: OutlinedButton(
-          onPressed: isLoading ? null : onPressed,
-          style: OutlinedButton.styleFrom(
-            foregroundColor: bgColor,
-            side: BorderSide(color: bgColor),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(borderRadius),
-            ),
-          ),
-          child: _buildChild(bgColor),
-        ),
-      );
-    }
+    final fgColor = isOutlined ? bgColor : (textColor ?? Colors.white);
+    final disabled = isLoading || onPressed == null;
 
     return SizedBox(
       width: width ?? double.infinity,
       height: height,
-      child: ElevatedButton(
-        onPressed: isLoading ? null : onPressed,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: bgColor,
-          foregroundColor: fgColor,
-          disabledBackgroundColor: bgColor.withOpacity(0.5),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(borderRadius),
+      child: Material(
+        color: isOutlined
+            ? Colors.transparent
+            : (disabled ? bgColor.withOpacity(0.5) : bgColor),
+        borderRadius: BorderRadius.circular(borderRadius),
+        child: InkWell(
+          onTap: disabled ? null : onPressed,
+          borderRadius: BorderRadius.circular(borderRadius),
+          child: Container(
+            decoration: isOutlined
+                ? BoxDecoration(
+                    borderRadius: BorderRadius.circular(borderRadius),
+                    border: Border.all(color: bgColor),
+                  )
+                : null,
+            alignment: Alignment.center,
+            child: _buildChild(fgColor),
           ),
         ),
-        child: _buildChild(fgColor),
       ),
     );
   }
@@ -80,17 +71,23 @@ class CustomButton extends StatelessWidget {
       );
     }
 
+    final textStyle = TextStyle(
+      fontSize: 16,
+      fontWeight: FontWeight.w600,
+      color: color,
+    );
+
     if (icon != null) {
       return Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 20),
+          Icon(icon, size: 20, color: color),
           const SizedBox(width: 8),
-          Text(text, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+          Text(text, style: textStyle),
         ],
       );
     }
 
-    return Text(text, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600));
+    return Text(text, style: textStyle);
   }
 }
